@@ -27,6 +27,17 @@ router.get("/:id", validateProjectId, (req, res) => {
   );
 });
 
+//Getting all actions for a project
+router.get("/:id/actions", validateProjectId, (req, res) => {
+  Project.getProjectActions(req.params.id)
+    .then(actions => res.status(200).json(actions))
+    .catch(() =>
+      res
+        .status(500)
+        .json({ errorMessage: "Error with getting all actions for a project" })
+    );
+});
+
 //Adding a new project
 router.post("/", validateProjectResource, (req, res) => {
   Project.insert(req.body)
@@ -60,17 +71,7 @@ router.put("/:id", [validateProjectId, validateProjectResource], (req, res) => {
     );
 });
 
-//Getting all actions for a project
-router.get("/:id/actions", validateProjectId, (req, res) => {
-  Project.getProjectActions(req.params.id)
-    .then(actions => res.status(200).json(actions))
-    .catch(() =>
-      res
-        .status(500)
-        .json({ errorMessage: "Error with getting all actions for a project" })
-    );
-});
-
+//Middleware will check if invalid project no is used so routing will stop
 router.use("/:id/actions", validateProjectId, actionRouter);
 
 //custom middleware to test incoming resources
