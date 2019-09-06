@@ -4,6 +4,7 @@ const Project = require("../data/helpers/projectModel");
 
 const router = express.Router();
 
+//Getting all Projects
 router.get("/", (req, res) => {
   Project.get()
     .then(project => res.status(200).json(project))
@@ -12,6 +13,7 @@ router.get("/", (req, res) => {
     });
 });
 
+//Getting a specific project
 router.get("/:id", validateProjectId, (req, res) => {
   Project.get(req.params.id).then(project =>
     res
@@ -25,6 +27,7 @@ router.get("/:id", validateProjectId, (req, res) => {
   );
 });
 
+//Adding a new project
 router.post("/", validateProjectResource, (req, res) => {
   Project.insert(req.body)
     .then(add => res.status(201).json({ Created: add }))
@@ -35,6 +38,7 @@ router.post("/", validateProjectResource, (req, res) => {
     );
 });
 
+//Deleting a project
 router.delete("/:id", validateProjectId, (req, res) => {
   Project.remove(req.params.id)
     .then(deleted => res.status(200).json({ recordsDeleted: deleted }))
@@ -45,6 +49,7 @@ router.delete("/:id", validateProjectId, (req, res) => {
     );
 });
 
+//Updating a project
 router.put("/:id", [validateProjectId, validateProjectResource], (req, res) => {
   Project.update(req.params.id, req.body)
     .then(update => res.status(202).json({ projectUpdated: update }))
