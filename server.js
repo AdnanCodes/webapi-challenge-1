@@ -1,5 +1,5 @@
 const express = require("express");
-
+const projectRouter = require("./App-Routes/projectRoute");
 const server = express();
 server.use(express.json());
 
@@ -8,6 +8,7 @@ function logger(req, res, next) {
   next();
 }
 server.use(logger);
+server.use("/projects", projectRouter);
 
 server.get("/", (req, res) => {
   res.send(`<h2>WEB API SPRINT</h2>`);
