@@ -36,7 +36,15 @@ router.delete("/:id", validateActionId, (req, res) => {
 });
 
 //Update action for a project
-//router.put();
+router.put("/:id", [validateActionId, validateActionResource], (req, res) => {
+  Actions.update(req.params.id, req.body)
+    .then(update => res.status(202).json({ projectUpdated: update }))
+    .catch(() =>
+      res
+        .status(500)
+        .json({ errorMessage: "Error updating the specific Project" })
+    );
+});
 
 //Custom middleware for testing incoming resources
 function validateActionId(req, res, next) {
