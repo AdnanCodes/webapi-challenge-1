@@ -1,7 +1,7 @@
 const express = require("express");
 
 const Project = require("../data/helpers/projectModel");
-
+const actionRouter = require("../App-Routes/actionRoute");
 const router = express.Router();
 
 //Getting all Projects
@@ -59,6 +59,19 @@ router.put("/:id", [validateProjectId, validateProjectResource], (req, res) => {
         .json({ errorMessage: "Error updating the specific Project" })
     );
 });
+
+//Getting all actions for a project
+router.get("/:id/actions", validateProjectId, (req, res) => {
+  Project.getProjectActions(req.params.id)
+    .then(actions => res.status(200).json(actions))
+    .catch(() =>
+      res
+        .status(500)
+        .json({ errorMessage: "Error with getting all actions for a project" })
+    );
+});
+
+router.use("/:id/actions", validateProjectId, actionRouter);
 
 //custom middleware to test incoming resources
 function validateProjectResource(req, res, next) {
